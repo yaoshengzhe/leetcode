@@ -5,7 +5,7 @@ public class Solution {
         if ( Math.abs(x - 1) < 1e-6) {
             return 1;
         } else if ( Math.abs(x + 1) < 1e-6) {
-            return -1;
+            return Math.abs(n) % 2 == 0 ? 1 : -1;
         }
         
         if (n < 0) {
