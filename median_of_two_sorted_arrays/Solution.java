@@ -1,36 +1,37 @@
 public class Solution {
     public double findMedianSortedArrays(int A[], int B[]) {
-        int targetIndex = (A.length + B.length) / 2;
-        TwoSortedArrayIterator itr = new TwoSortedArrayIterator();
-        double current = -1;
-        while (targetIndex > 0) {
-            current = itr.next(A, B);
-            --targetIndex;
-        }
-        if ((A.length + B.length) % 2 == 1) {
-            return itr.next(A, B);
+
+        int len = A.length + B.length;
+        if (len % 2 == 0) {
+            return (double)(findKSortedArrays(A, 0, A.length, B, 0, B.length, len / 2) +
+                            findKSortedArrays(A, 0, A.length, B, 0, B.length, len / 2 - 1)) / 2;
         } else {
-            return (current + itr.next(A, B)) / 2;
+            return findKSortedArrays(A, 0, A.length, B, 0, B.length, len / 2);
         }
     }
-    
-    private static class TwoSortedArrayIterator {
-        int pa= 0;
-        int pb = 0;
-    public double next(int A[], int B[]) {
-        if (pa < A.length && pb < B.length) {
-                if (A[pa] < B[pb]) {
-                    return A[pa++];
-                } else {
-                    return B[pb++];
-                }
+
+    private int findKSortedArrays(int A[], int a, int b, int B[], int x, int y, int k) {
+        if (a >= b) {
+            return B[x + k];
+        } else if (x >= y) {
+            return A[a + k];
+        }
+
+        int midA = a + (b - a) / 2;
+        int midB = x + (y - x) / 2;
+
+        if ( midA - a + midB - x >= k) {
+            if (A[midA] >= B[midB]) {
+                return findKSortedArrays(A, a, midA, B, x, y, k);
+            } else {
+                return findKSortedArrays(A, a, b, B, x, midB, k);
             }
-        if (pa < A.length) {
-                return A[pa++];
-            } else if (pb < B.length) {
-                return B[pb++];
+        } else {
+            if (A[midA] >= B[midB]) {
+                return findKSortedArrays(A, a, b, B, midB + 1, y, k - (midB - x + 1));
+            } else {
+                return findKSortedArrays(A, midA + 1, b, B, x, y, k - (midA - a + 1));
             }
-        return -1;
-    }
+        }
     }
 }
