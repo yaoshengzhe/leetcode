@@ -7,7 +7,7 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
- 
+
 import java.util.Queue;
 import java.util.LinkedList;
 
@@ -17,13 +17,22 @@ public class Solution {
         if (root != null) {
             Queue<TreeNode> queue = new LinkedList<TreeNode>();
             queue.offer(root);
-            
+            boolean isEvenLevel = false;
             while (queue.size() > 0) {
-                ArrayList<Integer> level = new ArrayList<Integer>();
                 int size = queue.size();
+                ArrayList<Integer> level = new ArrayList<Integer>(size);
+                for (int i=0; i < size; ++i) {
+                    level.add(0);
+                }
                 for (int i=0; i < size; ++i) {
                     TreeNode cur = queue.poll();
-                    level.add(cur.val);
+
+                    if (isEvenLevel) {
+                        level.set(size - i - 1, cur.val);
+                    } else {
+                        level.set(i, cur.val);
+                    }
+
                     if (cur.left != null) {
                         queue.offer(cur.left);
                     }
@@ -32,7 +41,9 @@ public class Solution {
                     }
                 }
                 result.add(level);
+                isEvenLevel = !isEvenLevel;
             }
+            /*
             for (int i=1; i < result.size(); i += 2) {
                 ArrayList<Integer> level = result.get(i);
                 int  start = 0;
@@ -44,7 +55,7 @@ public class Solution {
                     start++;
                     end--;
                 }
-            }
+            } */
         }
         return result;
     }
