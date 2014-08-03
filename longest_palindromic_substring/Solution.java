@@ -1,45 +1,45 @@
-/* @(#)Solution.java
- */
-/**
- * Given a string S, find the longest palindromic substring in S.
- * You may assume that the maximum length of S is 1000, and there 
- * exists one unique longest palindromic substring.
- *
- * @author Shengzhe Yao
- */
-
 public class Solution {
     public String longestPalindrome(String s) {
-        if (s == null || s.length() == 0) {
-            return "";
-        }
-        int maxLen = -1;
-        int maxStart = -1;
+        char[] modifiedStr = new char[s.length() * 2 + 1];
         for (int i=0; i < s.length(); ++i) {
-            int startOdd = getLongestPalindrome(s, i, i);
-            int startEven = getLongestPalindrome(s, i-1, i);
-            int oddLen = (i - startOdd) * 2 + 1;
-            int evenLen = (i-startEven) * 2;
-            if (oddLen > evenLen) {
-                if (maxLen < oddLen) {
-                    maxStart = startOdd;
-                    maxLen = oddLen;
+            modifiedStr[2*i] = '#';
+            modifiedStr[2*i+1] = s.charAt(i);
+        }
+        modifiedStr[s.length()*2] = '#';
+        int[] p = new int[s.length()*2 + 1];
+        int center = 0;
+        int right = 0;
+        p[0] = 0;
+        int bestCenter = 0;
+
+        for (int i=1; i < modifiedStr.length-1; ++i) {
+
+            int mirror = 2 * center - i;
+
+            if (right > i) {
+                if (right - i > p[mirror]) {
+                    p[i] = p[mirror];
+                } else {
+                    p[i] = right - i;
                 }
             } else {
-                if (maxLen < evenLen) {
-                    maxStart= startEven;
-                    maxLen = evenLen;
-                }
+                p[i] = 0;
+            }
+
+            while (i - p[i] - 1 >= 0 && i + p[i] + 1 < modifiedStr.length &&
+                   modifiedStr[i - p[i] - 1] == modifiedStr[i + p[i] + 1]) {
+                p[i]++;
+            }
+
+            if (i + p[i] > right) {
+                right = i + p[i];
+                center = i;
+            }
+
+            if (p[bestCenter] < p[i]) {
+                bestCenter = i;
             }
         }
-        return s.substring(maxStart, maxStart + maxLen);
-    }
-
-    private int getLongestPalindrome(String s, int start, int end) {
-        while (start >=0 && end < s.length() && s.charAt(start) == s.charAt(end)) {
-            --start;
-            ++end;
-        }
-        return start+1;
+        return s.substring((bestCenter - p[bestCenter])/2, (bestCenter + p[bestCenter])/2);
     }
 }
