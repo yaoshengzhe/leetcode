@@ -11,7 +11,7 @@ public class Solution {
                 left++;
             } else {
                 area = Math.max(area, (right - left) * height[right]);
-                right--;    
+                right--;
             }
         }
         return area;
