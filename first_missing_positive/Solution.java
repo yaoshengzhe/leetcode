@@ -1,27 +1,19 @@
 public class Solution {
     public int firstMissingPositive(int[] A) {
-        if (A == null || A.length == 0) {
-            return 1;
-        }
-        for (int i=0; i < A.length; ) {
-            int n = A[i];
-            if (n >= 0 && n < A.length && A[n] != n) {
-                swap(A, i, n);
+        for (int i=0; i < A.length;) {
+            if (A[i] >= 1 && A[i] != (i+1) && A[i] - 1 < A.length && A[i] != A[A[i]-1]) {
+                int tmp = A[i];
+                A[i] = A[tmp - 1];
+                A[tmp - 1] = tmp;
             } else {
                 i++;
             }
         }
-        for (int i=1; i < A.length; ++i) {
-            if (A[i] != i) {
-                return i;
+        for (int i=0; i < A.length; ++i) {
+            if (A[i] != i+1) {
+                return i+1;
             }
         }
-        return A[0] == A.length ? A.length + 1 : A.length;
-    }
-
-    private void swap(int[] A, int i, int j) {
-        int tmp = A[i];
-        A[i] = A[j];
-        A[j] = tmp;
+        return A.length + 1;
     }
 }
