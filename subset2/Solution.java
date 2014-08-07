@@ -1,37 +1,26 @@
 import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Solution {
-    public ArrayList<ArrayList<Integer>> subsetsWithDup(int[] num) {
+    public List<List<Integer>> subsetsWithDup(int[] num) {
         Arrays.sort(num);
-        return subsetsWithDupHelper(num, 0);
-    }
-    
-    private ArrayList<ArrayList<Integer>> subsetsWithDupHelper(int[] num, int start) {
-        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-        if (num == null || num.length <= start) {
-            result.add(new ArrayList<Integer>());
-            return result;
-        }
-        
-        int target = num[start];
-        int dupLen = 0;
-        while (start < num.length && target == num[start]) {
-            dupLen++;
-            start++;
-        }
-        
-        ArrayList<ArrayList<Integer>> subset = subsetsWithDupHelper(num, start);
-        for (ArrayList<Integer> sub : subset) {
-            result.add(sub);
-            for (int i=1; i < dupLen+1; ++i) {
-                ArrayList<Integer> r = new ArrayList<Integer>();
-                for (int j=0; j < i; ++j) {
-                    r.add(target);
-                }
-                r.addAll(sub);
-                result.add(r);
-            }
-        }
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        LinkedList<Integer> buf = new LinkedList<Integer>();
+        subsetWithDupHelper(num, 0, buf, result);
         return result;
+    }
+
+    private void subsetWithDupHelper(int[] num, int start, LinkedList<Integer> buf, List<List<Integer>> result) {
+        if (start == num.length) {
+            result.add(new ArrayList<Integer>(buf));
+        } else {
+            buf.add(num[start]);
+            subsetWithDupHelper(num, start+1, buf, result);
+            buf.removeLast();
+            while (start < num.length - 1 && num[start] == num[start+1]) {
+                start++;
+            }
+            subsetWithDupHelper(num, start+1, buf, result);
+        }
     }
 }
