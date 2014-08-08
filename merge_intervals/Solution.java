@@ -7,40 +7,36 @@
  *     Interval(int s, int e) { start = s; end = e; }
  * }
  */
- 
-import java.util.Collections;
-import java.util.Comparator;
-import java.lang.Math;
-
 public class Solution {
-    public ArrayList<Interval> merge(ArrayList<Interval> intervals) {
-        ArrayList<Interval> result = new ArrayList<Interval>();
-        
-        if (intervals == null || intervals.isEmpty()) {
-            return result;
-        }
-        
+    public List<Interval> merge(List<Interval> intervals) {
+
+        List<Interval> result = new LinkedList<Interval>();
         Collections.sort(intervals, new Comparator<Interval>() {
-            public int compare(Interval a, Interval b) {
-                return a.start - b.start;
-            }
-        });
-        Interval cur = intervals.get(0);
-        for (int i=1; i < intervals.size(); ++i) {
-            Interval next = intervals.get(i);
-            
-            if (cur == null || next.end < cur.start) {
-                result.add(next);
-            } else if (cur.end < next.start) {
-                result.add(cur);
-                cur = next;
+                public int compare(Interval a, Interval b) {
+                    if (a.start < b.start) {
+                        return -1;
+                    } else if (a.start > b.start) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+        Interval current = null;
+        for (Interval i : intervals) {
+            if (current == null) {
+                current = i;
             } else {
-                cur = new Interval(Math.min(cur.start, next.start),
-                                   Math.max(cur.end, next.end));
+                if (i.start > current.end) {
+                    result.add(current);
+                    current = i;
+                } else if (i.end >= current.end) {
+                    current.end = i.end;
+                }
             }
         }
-        if (cur != null) {
-            result.add(cur);
+        if (current != null) {
+            result.add(current);
         }
         return result;
     }
