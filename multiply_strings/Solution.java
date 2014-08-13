@@ -2,76 +2,37 @@ import java.lang.StringBuilder;
 
 public class Solution {
     public String multiply(String num1, String num2) {
-        if (num1.length() > num2.length()) {
-            return multiply(num2, num1);
-        }
-        String result = "0";
-        int sgn = 1;
-        if (num1.charAt(0) == '-') {
-            sgn = -sgn;
-            num1 = num1.substring(1);
-        }
-        if (num2.charAt(0) == '-') {
-            sgn = -sgn;
-            num2 = num2.substring(1);
+        int len = num1.length() + num2.length();
+        int[] buf = new int[num1.length() + num2.length() + 1];
+        for (int i=0; i < buf.length; ++i) {
+            buf[i] = 0;
         }
 
-        for (int i=num1.length()-1; i > -1 ; --i) {
-            int carry = 0;
-            StringBuilder buf = new StringBuilder();
-            for (int k = i+1; k < num1.length(); ++k) {
-                buf.append('0');
-            }
+        for (int i=num1.length()-1; i >= 0; --i) {
             int a = num1.charAt(i) - '0';
-            if (a != 0) {
-                for (int j=num2.length()-1; j > -1 ; --j) {
-                    int b = num2.charAt(j) - '0';
-                    int val = a * b + carry;
-                    buf.append(val % 10);
-                    carry = val / 10;
-                }
-                if (carry > 0) {
-                    buf.append(carry);
-                }
-                buf.reverse();
-                result = add(buf.toString(), result);
+            for (int j=num2.length()-1; j >= 0; --j) {
+                int b = num2.charAt(j) - '0';
+                buf[len - i - j - 2] += a * b;
             }
         }
-        return sgn < 0 ? "-" + result : result;
-    }
 
-    private String add(String s1, String s2) {
-        StringBuilder buf = new StringBuilder();
         int carry = 0;
-        int i = s1.length() - 1;
-        int j = s2.length() - 1;
-        while (i > -1 && j > -1) {
-            int a = s1.charAt(i) - '0';
-            int b = s2.charAt(j) - '0';
-            int val = a + b + carry;
-            buf.append(val % 10);
-            carry = val / 10;
-            i--;
-            j--;
+        for (int i=0; i < buf.length - 1; ++i) {
+            int val = buf[i] + carry;
+            buf[i] = (val % 10);
+            carry = (val / 10);
         }
-        while (i > -1) {
-            int a = s1.charAt(i) - '0';
-            int val = a + carry;
-            buf.append(val % 10);
-            carry = val / 10;
+        buf[num1.length() + num2.length()] = carry;
+
+        StringBuilder builder = new StringBuilder();
+        int i = buf.length - 1;
+        while (i >= 0 && buf[i] == 0) {
             i--;
         }
-        while (j > -1) {
-            int b = s2.charAt(j) - '0';
-            int val = b + carry;
-            buf.append(val % 10);
-            carry = val / 10;
-            j--;
+
+        for (; i >= 0; --i) {
+            builder.append(buf[i]);
         }
-        if (carry > 0) {
-            buf.append(carry);
-        }
-        buf.reverse();
-        return buf.toString();
+        return builder.length() == 0 ? "0" : builder.toString();
     }
 }
