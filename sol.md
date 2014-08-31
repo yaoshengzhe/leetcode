@@ -127,10 +127,10 @@
     - 注意path sum可能为负，此时要返回非负一遍的path sum + node.val。
     - 初始的全局最大值要为Integer.MIN_VALUE，因为path sum可能为负。
 
-## 
+## [Best Time to Buy and Sell Stock](best_time_to_buy_and_sell_stock/Solution.java)
 
-* 算法：
-* 难点：
+* 算法：和最大子数组和一样。
+* 难点：无
 
 ## Rotate List
 
