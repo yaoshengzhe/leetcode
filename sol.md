@@ -114,6 +114,11 @@
                 X'.next = X.next.next;
             }
 
+## [Surrounded Regions](surrounded_regions/Solution.java)
+
+* 算法：对board外围(上下左右边)进行dfs或者bfs(如果是O)，然后将所有找到的O设为某个除O, X外的字符(比如Y)。最后将Y改为O, O改为X
+* 难点：无
+
 ## 
 
 * 算法：
