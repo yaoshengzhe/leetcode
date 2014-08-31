@@ -7,43 +7,30 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
- 
-import java.util.Queue;
-import java.util.LinkedList;
-
 public class Solution {
     public int minDepth(TreeNode root) {
         if (root == null) {
             return 0;
         }
-        
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        queue.offer(root);
-        int minDepth = 1;
-        int queueSize = 1;
-        while (queueSize > 0) {
-            int newQueueSize = 0;
-            int i=0;
-            for (; i < queueSize; ++i) {
-                TreeNode cur = queue.poll();
-                if (cur.left == null && cur.right == null) {
-                    break;
+        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.add(root);
+        int min = 0;
+        while (queue != null) {
+            int queueLen = queue.size();
+            for (int i=0; i < queueLen; ++i) {
+                TreeNode node = queue.poll();
+                if (node.left == null && node.right == null) {
+                    return min + 1;
                 }
-                if (cur.left != null) {
-                    queue.offer(cur.left);
-                    newQueueSize++;
+                if (node.left != null) {
+                    queue.add(node.left);
                 }
-                if (cur.right != null) {
-                    queue.offer(cur.right);
-                    newQueueSize++;
-                }    
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
             }
-            if (i != queueSize) {
-                break;
-            }
-            queueSize = newQueueSize;
-            minDepth++;
+            min++;
         }
-        return minDepth;
+        return min;
     }
 }

@@ -145,6 +145,11 @@
     - 递归：注意左子树或者右子树可能为空。
     - 非递归：无(敲的时候脑子想清楚就行)
 
+## [Minimum Depth of Binary Tree](minimum_depth_of_binary_tree/Solution.java)
+
+* 算法：BFS，按层处理
+* 难点：在处理每层时，如果某一node是叶节点则马上返回当前level+1
+
 ## Rotate List
 
 * 算法：找到分割点，然后改指针。
