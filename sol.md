@@ -132,6 +132,19 @@
 * 算法：和最大子数组和一样。
 * 难点：无
 
+## [Flatten Binary Tree to Linked List](flatten_binary_tree_to_linked_list/Solution.java)
+
+* 算法：
+
+    - 递归：设递归函数接受一个node, 拍扁，并返回最后一个node。则对于一个给定node, 对node.left和node.right分别递归调用。然后连接起来。
+    
+    - 非递归：如果当前节点有左节点，找到左节点的最右节点, 然后将最右节点连到node.right。然后node.right = node.left。最后移到下一个节点(node = node.right)。每次都将当前node拍扁并移到下一个节点。
+
+* 难点：
+
+    - 递归：注意左子树或者右子树可能为空。
+    - 非递归：无(敲的时候脑子想清楚就行)
+
 ## Rotate List
 
 * 算法：找到分割点，然后改指针。

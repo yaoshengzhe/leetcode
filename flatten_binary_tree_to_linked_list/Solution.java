@@ -8,34 +8,42 @@
  * }
  */
 public class Solution {
+    // iterative
     public void flatten(TreeNode root) {
-        TreeNode p = flattenHelper(root);
-        if (p != null) {
-            p.right = null;
+        while (root != null) {
+            if (root.left != null) {
+                TreeNode p = root.left;
+                while (p.right != null) {
+                    p = p.right;
+                }
+                p.right = root.right;
+                root.right = root.left;
+                root.left = null;
+            }
+            root = root.right;
         }
     }
-    
-    private TreeNode flattenHelper(TreeNode node) {
+
+    // recursive
+    public void flatten(TreeNode root) {
+        helper(root);
+    }
+
+    TreeNode helper(TreeNode node) {
         if (node == null) {
             return null;
         }
-        
-        TreeNode left = flattenHelper(node.left);
-        TreeNode right = flattenHelper(node.right);
-        node.left = null;
-        node.right = node;
-        return merge(merge(node, left), right);
-    }
-    
-    private TreeNode merge(TreeNode left, TreeNode right) {
-        if (left == null) {
-            return right;
-        } else if (right == null) {
-            return left;
+        TreeNode left = helper(node.left);
+        TreeNode right = helper(node.right);
+
+        if (left != null) {
+            left.right = node.right;
+            node.right = node.left;
+            node.left = null;
+        }
+        if (right == null) {
+            return left == null ? node : left;
         } else {
-            TreeNode head = left.right;
-            left.right = right.right;
-            right.right = head;
             return right;
         }
     }
