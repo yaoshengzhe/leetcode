@@ -119,10 +119,13 @@
 * 算法：对board外围(上下左右边)进行dfs或者bfs(如果是O)，然后将所有找到的O设为某个除O, X外的字符(比如Y)。最后将Y改为O, O改为X
 * 难点：无
 
-## 
+## [Binary Tree Max Path Sum](binary_tree_max_path_sum/Solution.java)
 
-* 算法：
+* 算法：递归函数返回从叶节点到当前节点最大的path sum。递归函数中，分别求该节点的左右节点的最大path sum，然后更新全局最大值(用一个变量保存)。
 * 难点：
+
+    - 注意path sum可能为负，此时要返回非负一遍的path sum + node.val。
+    - 初始的全局最大值要为Integer.MIN_VALUE，因为path sum可能为负。
 
 ## 
 
